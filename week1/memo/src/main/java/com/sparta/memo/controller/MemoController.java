@@ -11,34 +11,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class MemoController {
-    private final JdbcTemplate jdbcTemplate;
+    private final MemoService memoService;
 
     public MemoController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.memoService = new MemoService(jdbcTemplate);
     }
 
     @PostMapping("/memos")
     public MemoResponseDto createMemo(@RequestBody MemoRequestDto requestDto) {
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.createMemo(requestDto);
         // 컨트롤러 메소드 이름과 서비스 메소드 이름을 일치 시키면 누가봐도 어떤 메소드인지 알기 쉽겠죠?
     }
 
     @GetMapping("/memos")
     public List<MemoResponseDto> getMemos() {
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.getMemos();
     }
 
     @PutMapping("/memos/{id}")
     public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.updateMemo(id, requestDto);
     }
 
     @DeleteMapping("/memos/{id}")
     public Long deleteMemo(@PathVariable Long id) {
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.deleteMemo(id);
     }
 

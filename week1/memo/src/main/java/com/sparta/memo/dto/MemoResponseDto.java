@@ -1,6 +1,7 @@
 package com.sparta.memo.dto;
 
 import com.sparta.memo.entity.Memo;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
