@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BlogService {
@@ -26,7 +27,7 @@ public class BlogService {
     }
 
     public List<PostResponseDto> getPosts() {
-        return blogRepository.findAll().stream().map(PostResponseDto::new).toList();
+        return blogRepository.findAllByOrderByCreatedAtDesc().stream().map(PostResponseDto::new).toList();
     }
 
     public PostResponseDto getPostById(Long id) {
@@ -34,20 +35,28 @@ public class BlogService {
     }
 
     @Transactional
-    public Long updatePost(Long id, PostRequestDto requestDto) {
+    public PostResponseDto updatePost(Long id, PostRequestDto requestDto) {
         Post post = findPost(id);
-        post.update(requestDto);
-        return id;
+        if (Objects.equals(post.getPassword(), requestDto.getPassword())) {
+            post.update(requestDto);
+        }
+        return new PostResponseDto(post);
+
+    }
+
+    public String deletePost(Long id) {
+        Post post = findPost(id);
+        try {
+            blogRepository.delete(post);
+            return "success";
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "fail";
+        }
     }
 
     private Post findPost(Long id) {
         return blogRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("선택한 post는 존재하지 않습니다."));
-    }
-
-    public Long deletePost(Long id) {
-        Post post = findPost(id);
-        blogRepository.delete(post);
-        return id;
+                new IllegalArgumentException("선택한 post는 존재하지 습니다."));
     }
 }

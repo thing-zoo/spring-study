@@ -2,7 +2,6 @@ package com.example.level1.controller;
 
 import com.example.level1.dto.PostRequestDto;
 import com.example.level1.dto.PostResponseDto;
-import com.example.level1.entity.Post;
 import com.example.level1.service.BlogService;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,15 +32,13 @@ public class BlogController {
     }
 
     @PutMapping("/post/{id}")
-    public Long updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
+    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
         return blogService.updatePost(id, requestDto);
     }
 
     @DeleteMapping("/post/{id}")
-    public Long deletePost(@PathVariable Long id) {
+    public String deletePost(@PathVariable Long id) {
         return blogService.deletePost(id);
     }
-
-
 
 }
