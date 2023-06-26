@@ -37,4 +37,9 @@ public class MemoController {
         return memoService.deleteMemo(id);
     }
 
+    @GetMapping("/memos/contents")
+    public List<MemoResponseDto> getMemosByKeyword(@RequestParam String keyword) {
+        return memoService.getMemosByKeyword(keyword);
+    }
+
 }
