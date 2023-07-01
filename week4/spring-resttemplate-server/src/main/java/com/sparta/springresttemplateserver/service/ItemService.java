@@ -20,11 +20,20 @@ public class ItemService {
     );
 
     public Item getCallObject(String query) {
+        for (Item item : itemList) {
+            if(item.getTitle().equals(query)) {
+                return item;
+            }
+        }
         return null;
     }
 
-    public ItemResponseDto getCallList() {
-        return null;
+    public ItemResponseDto getCallList() { // List<ItemResponseDto> 로도 할 수 있지만 이렇게도 많이 한다.
+        ItemResponseDto responseDto = new ItemResponseDto();
+        for (Item item : itemList) {
+            responseDto.setItems(item);
+        }
+        return responseDto;
     }
 
     public Item postCall(String query, UserRequestDto requestDto) {
